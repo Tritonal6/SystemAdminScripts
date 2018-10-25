@@ -31,6 +31,7 @@ Function Search-Excel {
     }
     $Workbook = $Excel.Workbooks.Open($Source)
     ForEach ($Worksheet in @($Workbook.Sheets)) {
+    Write-Progress -Activity "Searching: $Source" -Status "File $Counter of $($Workbook.Sheets.count)" -PercentComplete ($Counter*100/$Workbook.Sheets.count)
         # Find Method https://msdn.microsoft.com/en-us/vba/excel-vba/articles/range-find-method-excel
         $Found = $WorkSheet.Cells.Find($SearchText)
         If ($Found) {

@@ -1,0 +1,29 @@
+$Path = "C:\SEARCHDIR"
+$Find = "TEXT"
+$WordExts = '.docx','.doc','.docm'
+
+$Word = New-Object -ComObject Word.Application #create word obj
+$Word.Visible = $false #hide the window
+
+$ValidDocs = Get-ChildItem $Path -Recurse | ? {$_.Extension -in $WordExts} | ForEach { #Foreach doc/docx/docm file in the above folder
+    $Doc = $Word.Documents.Open($_.FullName) #Open the document in the word object
+    $Content = $Doc.Content #get the 'content' object from the document
+    $Content.MoveStart() | Out-Null #ensure we're searching from the beginning of the doc
+                              #term,case sensitive,whole word,wildcard,soundslike,synonyms,direction,wrappingmode
+    if ($Content.Find.Execute($Find,$false,        $true,     $false,  $false,    $false,  $true,    1)){ #execute a search
+        Write-Host "$($_.Name) contains $($findText)" -ForegroundColor Green
+        $_.FullName #store this in $ValidDocs
+    } else {
+        Write-Host "$($_.Name) does not contain $($findText)" -ForegroundColor Red
+    }
+    $Doc.Close() #close the individual document
+    $Doc = $null #null it just in case
+}
+
+$Word.Quit()
+$null = [System.Runtime.InteropServices.Marshal]::ReleaseComObject([System.__ComObject]$word)
+[gc]::Collect()
+[gc]::WaitForPendingFinalizers()
+Remove-Variable word
+
+return $ValidDocs

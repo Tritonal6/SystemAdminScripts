@@ -1,0 +1,30 @@
+function Thanos {
+    [CmdletBinding()]
+    Param()
+    Begin {
+        $ProcessList = Get-Process
+        $SurviveList = New-Object -TypeName System.Collections.ArrayList
+        $KillList = New-Object -TypeName System.Collections.ArrayList
+        
+        $ProcessList | ForEach-Object {
+            if (($true, $false | Get-Random)) {
+                $SurviveList.Add($_)
+            }
+            else {
+                $KillList.Add($_)
+            }
+        }
+    }
+    Process {
+        $SurviveList.Name | ForEach-Object {
+            Write-Verbose "Surviving Process: $_"
+        }
+        $KillList | ForEach-Object {
+            Write-Output "Killing Process: $($_.Name)"
+            $_ | Stop-Process
+        }
+    }
+    End {
+        Write-Verbose "All is in balance."
+    }
+}

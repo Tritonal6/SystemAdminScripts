@@ -1,0 +1,18 @@
+# This is just a random little script for a submit button that saves to a specific location.
+
+Private Sub CommandButton1_Click()
+ ChangeFileOpenDirectory "C:\Users\ianbr\Documents\Temp\"
+    ActiveDocument.SaveAs2 FileName:=InputBox(sName), _
+    FileFormat:= _
+        wdFormatXMLDocumentMacroEnabled, _
+        LockComments:=False, _
+        Password:="", _
+        AddToRecentFiles:=True, _
+        WritePassword:="", _
+        ReadOnlyRecommended:=False, _
+        EmbedTrueTypeFonts:=False, _
+        SaveNativePictureFormat:=False, _
+        SaveFormsData _
+        :=False, SaveAsAOCELetter:=False, CompatibilityMode:=15
+        MsgBox "File Saved!"
+End Sub

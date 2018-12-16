@@ -1,7 +1,7 @@
 # This is just a random little script for a submit button that saves to a specific location.
 
 Private Sub CommandButton1_Click()
- ChangeFileOpenDirectory "C:\Users\ianbr\Documents\Temp\"
+ ChangeFileOpenDirectory "C:\Path\To\Save\The\Docm\"
     ActiveDocument.SaveAs2 FileName:=InputBox(sName), _
     FileFormat:= _
         wdFormatXMLDocumentMacroEnabled, _
@@ -15,4 +15,8 @@ Private Sub CommandButton1_Click()
         SaveFormsData _
         :=False, SaveAsAOCELetter:=False, CompatibilityMode:=15
         MsgBox "File Saved!"
+' End of File Saving - now to open
+        ChangeFileOpenDirectory "C:\Path\To\Desired\Open\Directory"
+        Dialogs(wdDialogFileOpen).Show
+
 End Sub
